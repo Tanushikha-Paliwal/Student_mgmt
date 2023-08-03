@@ -10,7 +10,13 @@ urlpatterns = [
     path('viewstudent/',views.view_student),
     path('ragistration/',views.registration),
     path('login/', views.login),
-    path('add_course/',views.add_Course)
+    path('add_course/',views.add_Course),
+    path('updateview/<int:c_id>/',views.update_view),
+    path("updatecourse/",views.update_course ),
+    path('delete/<int:pk>/',views.delete, name="delete_course"),
+    path('viewstudents/',views.view_student),
+    path('addstudent/',views.add_student)
+    
 
 
 ]
