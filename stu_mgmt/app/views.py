@@ -60,19 +60,21 @@ def login(request):
 
 
 def add_Course(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         course_name = request.POST["CourseName"]
         fees = request.POST["CourseFees"]
         duration = request.POST["Duration"]
         comment = request.POST["CourseDesc"]
-        Courses.objects.create(course_name=course_name,fees=fees
-                               ,duration=duration,comment=comment)
+        Courses.objects.create(
+            course_name=course_name, fees=fees, duration=duration, comment=comment
+        )
         return redirect("/courses/")
 
 
-def update_view(request,c_id):
-    data =   Courses.objects.get(id=c_id)
-    return render(request,'updatecourse.html',{"data":data})
+def update_view(request, c_id):
+    data = Courses.objects.get(id=c_id)
+    return render(request, "updatecourse.html", {"data": data})
+
 
 def update_course(request):
     if request.method == "POST":
@@ -81,51 +83,105 @@ def update_course(request):
         fees = request.POST["CourseFees"]
         duration = request.POST["Duration"]
         comment = request.POST["CourseDesc"]
-        Courses.objects.filter(id=c_id).update(course_name=course_name , fees=fees , duration=duration , comment=comment)
-        return redirect('/courses/')
-    
+        Courses.objects.filter(id=c_id).update(
+            course_name=course_name, fees=fees, duration=duration, comment=comment
+        )
+        return redirect("/courses/")
 
-def delete(request,pk):
+
+def delete(request, pk):
     Courses.objects.filter(id=pk).delete()
     return redirect("/courses/")
 
+
 def view_student(request):
     stu = AddStudent.objects.all()
-    add_Course = Courses.objects.all()
-    redirect('viewstudents')
-    return render(request, 'viewstudents.html' , {'stu':stu , 'add_Course':add_Course})
+    addcourses = Courses.objects.all()
+    redirect("/viewstudents/")
+    return render(request, "viewstudents.html", {"stu": stu, "addcourses": addcourses})
+
 
 def add_student(request):
     if request.method == "POST":
-        st_name = request.POST.get['sname']
-        st_email = request.POST.get['semail']
-        st_phone = request.POST.get['phone']
-        st_college = request.POST.get['college']
-        st_degree = request.POST.get['degree']
-        st_addCourse_id = request.POST.get['course']
-        total_amount = request.POST.get['total_amt']
-        paid_amount = request.POST.get['paid_amt']
-        due_amount = request.POST.get['due_amt']
-        st_course = Courses.objects.get(id=st_addCourse_id)
-        if AddStudent.objects.filter(semail=st_email).exists():
-            messages.error(request , "Email Already Exists")
-            return redirect('add_student')
-        elif AddStudent.objects.filter(sphone=st_phone).exists():
-            messages.error(request , "Mobile Number Already Exists")
-            return redirect('add_student')
+        stu_name = request.POST.get("Name")
+        stu_email = request.POST.get("Email")
+        stu_mobile = request.POST.get("Mobile")
+        stu_college = request.POST.get("College")
+        stu_degree = request.POST.get("Degree")
+        stu_addcourse_id = request.POST.get("course")
+        total_amount = request.POST.get("qty")
+        paid_amount = request.POST.get("cost")
+        due_amount = request.POST.get("DueAmount")
+        stu_course = Courses.objects.get(id=stu_addcourse_id)
+        if AddStudent.objects.filter(semail=stu_email).exists():
+            messages.error(request, "Email id already exists")
+            return redirect("/viewstudents/")
+
+        elif AddStudent.objects.filter(sphone=stu_mobile).exists():
+            messages.error(request, "Mobile Number already exists")
+            return redirect("/viewstudents/")
         else:
-            AddStudent.objects.create(sname=st_name , semail=st_email , sphone=st_phone , scollege=st_college , sdegree=st_degree , scourses=st_course , total_amount=total_amount , paid_amount=paid_amount , due_amount=due_amount)
-            messages.success(request , "Student Addedd Successfully.......")
+            AddStudent.objects.create(
+                sname=stu_name,
+                semail=stu_email,
+                sphone=stu_mobile,
+                scollege=stu_college,
+                sdegree=stu_degree,
+                scourses=stu_course,
+                total_amount=total_amount,
+                paid_amount=paid_amount,
+                due_amount=due_amount,
+            )
+            messages.success(request, "Student Added Successfully!!")
             stu = AddStudent.objects.all()
-            add_Course = Courses.objects.all()
-            return render(request,'viewstudents.html', {'stu':stu , 'add_Course':add_Course})
+            addcourses = Courses.objects.all()
+            return render(
+                request,
+                "viewstudents.html",
+                {
+                    "stu": stu,
+                    "addcourses": addcourses,
+                },
+            )
     else:
-        AddStudent.objects.create(sname=st_name , semail=st_email , sphone=st_phone , scollege=st_college , sdegree=st_degree , scourses=st_course , total_amount=total_amount , paid_amount=paid_amount , due_amount=due_amount)
-        messages.success(request , "Student Addedd Successfully.......")
         stu = AddStudent.objects.all()
-        add_Course = Courses.objects.all()
-        return render(request,'viewstudents.html', {'stu':stu , 'add_Course':add_Course})
+        addcourses = Courses.objects.all()
+        return render(
+            request, "viewstudents.html", {"stu": stu, "addcourses": addcourses}
+        )
 
 
-    
-    
+def update_student_view(request, s_id):
+    data = AddStudent.objects.get(id=s_id)
+    addcourses = Courses.objects.all()
+    redirect("/studentupdateview/")
+    return render(
+        request, "studentupdate.html", {"data": data, "addcourses": addcourses}
+    )
+
+
+def update_student(request):
+    if request.method == "POST":
+        s_id = request.POST["s_id"]
+        sname = request.POST["Name"]
+        semail = request.POST["Email"]
+        sphone = request.POST["Mobile"]
+        scollege = request.POST["College"]
+        sdegree = request.POST["Degree"]
+        total_amount = request.POST["qty"]
+        paid_amount = request.POST["cost"]
+        due_amount = request.POST["DueAmount"]
+        # scourses = request.POST["course"]
+
+        AddStudent.objects.filter(id=s_id).update(
+            sname=sname,
+            semail=semail,
+            sphone=sphone,
+            scollege=scollege,
+            sdegree=sdegree,
+            total_amount=total_amount,
+            paid_amount=paid_amount,
+            due_amount=due_amount,
+            # scourses=scourses,
+        )
+        return redirect("/addstudent/")
