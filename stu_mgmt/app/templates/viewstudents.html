@@ -240,7 +240,7 @@
                       <td class="text-center text-sm">{{st.due_amount}}</td>
                       <td>
                         <a class="btn-btn-primary" href="/studentupdateview/{{st.id}}">Update</a>
-                        <a class="btn-btn-secondary" >Delete</a>
+                        <a class="btn-btn-secondary" href = "{% url 'delete_student' st.pk %}">Delete</a>
                       </td>
                     </tr>
                     </tr>

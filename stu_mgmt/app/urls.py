@@ -22,4 +22,5 @@ urlpatterns = [
         name="studentupdateview",
     ),
     path("updatestudent/", views.update_student),
+    path('deletestudent/<int:pk>/',views.delete_student , name="delete_student")
 ]

@@ -185,3 +185,9 @@ def update_student(request):
             # scourses=scourses,
         )
         return redirect("/addstudent/")
+
+
+
+def delete_student(request,pk):
+    AddStudent.objects.filter(id=pk).delete()
+    return redirect('/addstudent/')
