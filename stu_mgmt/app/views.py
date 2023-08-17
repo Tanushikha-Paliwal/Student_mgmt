@@ -3,6 +3,7 @@ from .models import *
 from django.contrib.auth.hashers import make_password, check_password
 from django.http.response import HttpResponse
 from django.contrib import messages
+from django.db.models import Q
 
 # Create your views here.
 
@@ -30,6 +31,10 @@ def table(request):
 
 def view_student(request):
     return render(request, "viewstudents.html")
+
+
+def teachers_view(request):
+    return render(request, "teachers.html")
 
 
 def registration(request):
@@ -191,3 +196,112 @@ def update_student(request):
 def delete_student(request,pk):
     AddStudent.objects.filter(id=pk).delete()
     return redirect('/addstudent/')
+
+
+def search_student(request):
+    if 'q' in request.GET:
+        q = request.GET['q']
+        multiple_q = Q(Q(sname__icontains=q)) | Q(Q(semail__icontains=q)) | Q(Q(sphone__icontains=q))
+        stu = AddStudent.objects.filter(multiple_q)
+    else:
+        stu = AddStudent.objects.all()
+    context = {'stu':stu}
+    return render(request,'viewstudents.html',context)
+
+
+def search_courses(request):
+    if 'c' in request.GET:
+        c = request.GET['c']
+        multiple_c = Q(Q(course_name__icontains=c))
+        course_obj = Courses.objects.filter(multiple_c)
+    else:
+        course_obj = Courses.objects.all()
+    context = {'course_obj':course_obj}
+    return render(request,'courses.html',context)
+
+
+
+
+
+def view_teachers(request):
+    teacher = Teacher.objects.all()
+    addcourses = Courses.objects.all()
+    redirect("/teachersview/")
+    return render(request, "teachers.html",{"teacher":teacher , "addcourses":addcourses})
+
+def add_teacher(request):
+    if request.method == "POST":
+        t_name = request.POST.get("name")
+        t_email = request.POST.get("email")
+        t_password = request.POST.get("password")
+        t_phone = request.POST.get("phone")
+        t_join_date = request.POST.get("date")
+        t_qualification = request.POST.get("qualification")
+        t_courses_id = request.POST.get("course")
+        t_emp_id = request.POST.get("emp_id")
+        t_gender = request.POST.get("gender")
+        t_courses = Courses.objects.get(id=t_courses_id)
+        if Teacher.objects.filter(tphone=t_phone).exists():
+            messages.error(request , "Teacher's Phone Number Already Exists")
+            return redirect("/teachersview/")
+        elif Teacher.objects.filter(temail=t_email).exists():
+            messages.error(request , "Teacher's Email Already Exists")
+            return redirect("/teachersview/")
+        else:
+            Teacher.objects.create(
+                tname = t_name ,
+                temail = t_email ,
+                tpassword = t_password , 
+                tphone = t_phone , 
+                join_date = t_join_date , 
+                t_qualification = t_qualification ,
+                employee_id = t_emp_id ,
+                tcourses = t_courses ,
+                gender = t_gender
+            )
+            messages.success(request , "Teacher added sucessfully..!!!")
+            teacher = Teacher.objects.all()
+            addcourses = Courses.objects.all()
+            return render(request, "teachers.html",{"teacher":teacher , "addcourses":addcourses})
+        
+
+def update_teacher_view(request,t_id):
+    data = Teacher.objects.get(id=t_id)
+    addcourses = Courses.objects.all()
+    return redirect(request , "teacherupdate.html", {"data":data , "addcourses":addcourses})
+
+def update_teacher(request):
+    if request.method == "POST":
+        t_id = request.POST['t_id']
+        tname = request.POST['name']
+        temail = request.POST['email']
+        tphone =  request.POST['phone']
+        join_date = request.POST['date']
+        t_qualification = request.POST['qualification']
+        employee_id = request.POST['emp_id']
+        gender = request.POST['gender']
+
+        Teacher.objects.filter(id=t_id).update(
+            tname = tname,
+            temail = temail,
+            tphone =tphone ,
+            join_date = join_date ,
+            t_qualification = t_qualification ,
+            employee_id =employee_id ,
+            gender = gender
+        )
+        return redirect("/addteachers/")
+    
+def delete_teacher(request,pk):
+    Teacher.objects.filter(id=pk).delete()
+    return redirect("/addteachers/")
+
+def search_teacher(request):
+     if 'q' in request.GET:
+        q = request.GET['q']
+        multiple_q = Q(Q(tname__icontains=q)) | Q(Q(temail__icontains=q)) | Q(Q(tphone__icontains=q))
+        stu = Teacher.objects.filter(multiple_q)
+     else:
+        stu = Teacher.objects.all()
+     context = {'stu':stu}
+     return render(request,'teachers.html',context)

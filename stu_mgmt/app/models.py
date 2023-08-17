@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models,models
 
 # Create your models here.
 
@@ -29,3 +29,19 @@ class AddStudent(models.Model):
 
     def __str__(self):
         return self.sname
+
+
+class Teacher(models.Model):
+    tname = models.CharField(max_length=200)
+    temail = models.CharField(max_length=200)
+    tpassword = models.CharField(max_length=200)
+    tphone = models.IntegerField()
+    join_date = models.DateField()
+    t_qualification = models.CharField(max_length=200)
+    employee_id = models.CharField(max_length=200)
+    tcourses = models.ForeignKey(Courses, on_delete=models.CASCADE)
+    gender = models.CharField(max_length=200)
+    # is_active = fields.BooleanField(default=True)
+    
+    def __str__(self):
+        return self.tname

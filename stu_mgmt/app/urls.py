@@ -22,5 +22,14 @@ urlpatterns = [
         name="studentupdateview",
     ),
     path("updatestudent/", views.update_student),
-    path('deletestudent/<int:pk>/',views.delete_student , name="delete_student")
+    path('deletestudent/<int:pk>/',views.delete_student , name="delete_student"),
+    path('search/',views.search_student , name='search'),
+    path('search_courses/',views.search_courses , name='search_courses'),
+    path('viewteacher/',views.teachers_view),
+    path('teachersview/',views.view_teachers),
+    path('addteachers/',views.add_teacher),
+    path('updateviewteacher/<int:t_id>/',views.update_teacher_view),
+    path('updateteacher/',views.update_teacher),
+    path('search_teachers/',views.search_teacher , name='search_teachers'),
+
 ]
