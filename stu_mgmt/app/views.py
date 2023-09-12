@@ -233,7 +233,7 @@ def add_teacher(request):
     if request.method == "POST":
         t_name = request.POST.get("name")
         t_email = request.POST.get("email")
-        t_password = request.POST.get("password")
+        t_password = make_password(request.POST["password"])
         t_phone = request.POST.get("phone")
         t_join_date = request.POST.get("date")
         t_qualification = request.POST.get("qualification")
@@ -290,18 +290,18 @@ def update_teacher(request):
             employee_id =employee_id ,
             gender = gender
         )
-        return redirect("/addteachers/")
+        return redirect("/teachersview/")
     
 def delete_teacher(request,pk):
     Teacher.objects.filter(id=pk).delete()
-    return redirect("/addteachers/")
+    return redirect("/teachersview/")
 
 def search_teacher(request):
      if 'q' in request.GET:
         q = request.GET['q']
         multiple_q = Q(Q(tname__icontains=q)) | Q(Q(temail__icontains=q)) | Q(Q(tphone__icontains=q))
-        stu = Teacher.objects.filter(multiple_q)
+        teacher = Teacher.objects.filter(multiple_q)
      else:
-        stu = Teacher.objects.all()
-     context = {'stu':stu}
+        teacher = Teacher.objects.all()
+     context = {'teacher':teacher}
      return render(request,'teachers.html',context)

@@ -30,6 +30,7 @@ urlpatterns = [
     path('addteachers/',views.add_teacher),
     path('updateviewteacher/<int:t_id>/',views.update_teacher_view),
     path('updateteacher/',views.update_teacher),
+    path('delete/<int:pk>/',views.delete_teacher , name="delete_teacher"),
     path('search_teachers/',views.search_teacher , name='search_teachers'),
 
 ]

@@ -164,7 +164,7 @@
               <div class="text-end pt-1">
               
                 <a class="btn bg-gradient-dark mb-0" style="margin-left:810px;" href="javascript:;" data-bs-toggle="modal"
-                  data-bs-target="#exampleModal"><i class="material-icons text-sm">add</i>Add HR</a>
+                  data-bs-target="#exampleModal"><i class="material-icons text-sm"></i>Add Teachers</a>
                   <div class="row">
                     
                   <form class="form-inline my-2 my-lg-0" action="/search_teachers/" >
@@ -188,7 +188,7 @@
             <div class="card-header pb-0">
               <div class="row">
                 <div class="col-lg-6 col-7">
-                  <h6>Total HR</h6>
+                  <h6>Total Teachers</h6>
                 </div>
               </div>
             </div>
@@ -198,6 +198,8 @@
                 <table class="table align-items-center mb-0">
                   <thead>
                     <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">S.no</th>
+
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" >Name</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2" >Email</th>
                       <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" >Password</th>
@@ -207,6 +209,9 @@
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Couses</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" >Employee ID</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" >Gender</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" >Update</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7" >Delete</th>
+
 
 
                         {% comment %} <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -231,8 +236,8 @@
                       <td class="text-center text-sm">{{t.tcourses}}</td>
                       <td class="text-center text-sm">{{t.gender}}</td>
                       <td>
-                        <button href = "/updateviewteacher/{{t.id}}" class="btn-btn-primary" >Update</button>
-                        {% comment %} <button href = "{% url 'delete_course' c.pk %}" class="btn-btn-secondary" >Delete</button> {% endcomment %}
+                        <button href="/updateviewteacher/{{t.id}}" class="btn-btn-primary">Update</button>
+                        <a href="{% url 'delete_teacher' t.pk %}" class="btn-btn-primary">Delete</a>
                       </td> 
 
                     </tr>
@@ -381,7 +386,7 @@
                   document.write(new Date().getFullYear())
                 </script>,
                 made with <i class="fa fa-heart"></i> by
-                <a href="https://blueticksoft.com/" class="font-weight-bold" target="_blank">Bluetick Softech</a>
+                <a href="/" class="font-weight-bold" target="_blank">Dashboard</a>
                 for a better web.
               </div>
             </div>
@@ -709,12 +714,12 @@
     }
   </script>
   <!-- Github buttons -->
-  <script async defer src="{% static "https://buttons.github.io/buttons.js"%}"></script>
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="{% static 'hrm/js/material-dashboard.min.js' %}"></script>
 
 
-  <script src="{% static "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"%}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
 {% comment %} <script>
     var form = document.forms.myform,
